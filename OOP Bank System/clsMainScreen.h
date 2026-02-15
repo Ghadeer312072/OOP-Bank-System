@@ -7,6 +7,11 @@
 #include"clsUpdateClientScreen.h"
 #include"clsFindClientScreen.h"
 #include"clsTransactionsScreen.h"
+#include"clsManageUsersSecreen.h"
+
+#include"Global.h"
+
+
 
 
 using namespace std;
@@ -52,6 +57,11 @@ private:
 	}
 	static void _ShowManageUsersScreen() {
 		cout << "Manage Users Screen Will be here...\n";
+		clsManageUsersSecreen::ShowManageUsersMenue();
+	}
+	static void _Logout() {
+	 CurrentUser = clsBankUser::Find("", "");
+
 	}
 	static void _PerformMainMenueOptions(enMainMenueOptions option) {
 		switch (option) {
@@ -99,6 +109,7 @@ private:
 		}
 		case enMainMenueOptions::eLogout: {
 			system("cls");
+			_Logout();
 			break;
 		}
 		}

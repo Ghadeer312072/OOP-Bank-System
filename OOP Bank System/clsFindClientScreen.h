@@ -25,6 +25,8 @@ private:
 	}
 public:
 	static void ShowFindClientScreen() {
+		if (!clsScreen::CheckAccessRight(clsBankUser::enPermissions::eFindClient))return;
+
 		string Title = "Find Client Screen";
 		_DrawScreenHeader(Title);
 		string AccountNumber = "";

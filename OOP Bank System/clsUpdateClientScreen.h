@@ -39,6 +39,8 @@ private:
 	}
 public:
 	static void showUpdateClientScreen() {
+		if (!clsScreen::CheckAccessRight(clsBankUser::enPermissions::eUpdateClient))return;
+
 		string Tilte = "Update Client screen";
 		_DrawScreenHeader(Tilte);
 		string AccountNumber = "";

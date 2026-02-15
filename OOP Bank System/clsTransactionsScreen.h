@@ -69,6 +69,8 @@ private:
 	}
 public:
 	static void ShowTransactionsMenue() {
+		if (!clsScreen::CheckAccessRight(clsBankUser::enPermissions::eTransaction))return;
+
 		system("cls");
 		string Title = "Tranactions Screen";
 		_DrawScreenHeader(Title);

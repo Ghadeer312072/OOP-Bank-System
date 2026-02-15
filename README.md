@@ -1,10 +1,9 @@
-# OOP Bank System (C++ Practice Project)
+# OOP Bank System – Enhanced with User Management & Permissions
 
-A C++ console application for managing bank clients, demonstrating a transition from procedural to object-oriented programming. The system implements core banking operations with file-based storage and showcases the four pillars of OOP: Encapsulation, Inheritance, Polymorphism, and Abstraction.
+A C++ console application for managing bank clients, demonstrating a transition from procedural to object-oriented programming.
+This version adds a complete user management system with login, role-based permissions, and secure access control.
 
-## Overview
-
-This project was initially built using a functional/procedural approach. Later, it was completely refactored into an object-oriented design to improve modularity, reusability, and maintainability. The system stores all client data in a text file (Clients.txt) and provides a menu-driven interface for performing banking operations.
+---
 
 ## 📌 Project Goal
 
@@ -14,26 +13,71 @@ The main goal of this project was to:
 - Understand class relationships and responsibility separation
 - Apply file handling for data persistence
 - Improve code organization and modularity
+- Implement a realistic user authentication and permission system
 
-### 🚀 Features
+---
 
-### **👤 Client Management**
+## 🚀 Features
+
+### 👤 Client Management
 
 - **List Clients** – Display all clients in a formatted table.
-
 - **Add New Client** – Prevent duplicate account numbers with validation.
-
 - **Delete Client** – Mark a client as deleted (soft delete) and update the file.
-
 - **Update Client Info** – Modify first name, last name, email, phone, PIN, and balance.
-
 - **Find Client** – Search by account number (with optional PIN) and view full details.
 
-### Transactions
+---
 
-- **Deposit**: Add funds to a client's account.
-- **Withdraw**: Deduct funds from a client's account with balance validation.
-- **Total Balance**: Display the balance of all clients and calculate the total across the system.
+### 💰 Transactions
+
+- **Deposit** – Add funds to a client’s account.
+- **Withdraw** – Deduct funds with balance validation.
+- **Total Balance** – Display individual balances and the total sum of all accounts.
+
+---
+
+### 🔐 User Management & Authentication
+
+- **Login System** – Secure authentication with username and password verification.
+- **User Management** – Add, delete, update, list, and find system users (requires admin permission).
+- **Permission System** – Fine-grained access control using bitwise permissions.
+- **Access Control** – Each menu option is enabled only if the logged-in user has the corresponding permission.
+
+---
+
+## 📂 Data Storage
+
+- Clients stored in `Clients.txt`
+- Users stored in `Users.txt`
+
+### Client record format:
+
+`FirstName#//#LastName#//#Email#//#Phone#//#AccountNumber#//#PinCode#//#Balance`
+
+### User record format:
+
+`FirstName#//#LastName#//#Email#//#Phone#//#UserName#//#Password#//#Permissions`
+
+Deleted records are marked and excluded when saving back to the file.
+
+---
+
+## 🔑 Permission System (Bitwise)
+
+Permissions are managed as a single integer where each bit represents a specific right:
+
+| Bit | Permission         | Value |
+| --- | ------------------ | ----- |
+| 0   | Show Client List   | 1     |
+| 1   | Add New Client     | 2     |
+| 2   | Delete Client      | 4     |
+| 3   | Update Client Info | 8     |
+| 4   | Find Client        | 16    |
+| 5   | Transactions       | 32    |
+| 6   | Manage Users       | 64    |
+
+A permission value of `-1` grants full access to all features.
 
 ---
 
@@ -42,90 +86,101 @@ The main goal of this project was to:
 ### Encapsulation
 
 - All data members are private.
-- Access is controlled using getters and setters.
-- Business logic (Deposit, Withdraw, Save) is handled inside the class.
+- Access is controlled via getters and setters.
+- Business logic (Deposit, Withdraw, Save, Delete) is handled inside the class.
+- MSVC extension `__declspec(property)` is used to simulate C#-like properties for cleaner syntax.
 
 ### Inheritance
 
-- `clsBankClient` inherits from `clsPerson`
-- Shared attributes like name, email, and phone are defined in the base class.
+- `clsBankClient` inherits from `clsPerson`.
+- All screen classes inherit from `clsScreen`, which provides common header-drawing methods.
 
 ### Polymorphism (Function Overloading)
 
-- The `Find` method is overloaded:
-  - Find by account number
-  - Find by account number + PIN
+The `Find` method is overloaded:
+
+- Find by account number
+- Find by account number + PIN
 
 ### Abstraction
 
-- High-level operations like `Save()`, `Delete()`, `Deposit()`, and `Withdraw()` hide internal file handling and data conversion logic.
+High-level operations like `Save()`, `Delete()`, `Deposit()`, and `Withdraw()` hide internal file handling and data conversion logic.
+
+Screens interact with business classes only through public static methods
+(e.g., `clsBankClient::Find`, `clsBankClient::GetClientsList`).
 
 ---
 
-## 💾 Data Storage
+# 📁 Project Structure (Based on Current Solution)
 
-Client data is stored in a text file:
+```
+OOP Bank System/
+│
+├── References
+├── External Dependencies
+│
+├── Header Files/
+│ ├── clsAddNewClientScreen.h
+│ ├── clsAddnewUserScreen.h
+│ ├── clsBankClient.h
+│ ├── clsBankUser.h
+│ ├── clsClientsListScreen.h
+│ ├── clsDate.h
+│ ├── clsDeleteClientScreen.h
+│ ├── clsDeleteUserScreen.h
+│ ├── clsDepositScreen.h
+│ ├── clsFindClientScreen.h
+│ ├── clsFindUserScreen.h
+│ ├── clsInputValidate.h
+│ ├── clsListUsersScreen.h
+│ ├── clsLoginScreen.h
+│ ├── clsMainScreen.h
+│ ├── clsManageUsersScreen.h
+│ ├── clsPerson.h
+│ ├── clsScreen.h
+│ ├── clsString.h
+│ ├── clsTotalBalancesScreen.h
+│ ├── clsTransactionsScreen.h
+│ ├── clsUpdateClientScreen.h
+│ ├── clsUpdateUserScreen.h
+│ ├── clsUtil.h
+│ ├── clsWithdrawScreen.h
+│ └── Global.h
+│
+├── Resource Files/
+│
+└── Source Files/
+└── OOP Bank System.cpp
 
-`Clients.txt`
-
-Format:
-
-`FirstName#//#LastName#//#Email#//#Phone#//#AccountNumber#//#PinCode#//#Balance`
-
-The system reads from and writes to this file to maintain persistence.
+```
 
 ---
+
+## ▶️ How to Run
 
 ### Requirements
 
-- C++ compiler (Visual Studio)
+- Windows OS (due to `__declspec(property)` and `system("pause>0")`)
+- Visual Studio 2019 or later (MSVC compiler)
 
-### Project Structure
+### Steps
 
-```
-📁 OOP-Bank-System/
-│
-├── OOP Bank System.cpp          # Entry point (main function)
-│
-├── Header Files/
-│   ├── clsPerson.h              # Base class that stores common person data
-│   ├── clsBankClient.h          # Bank client entity (inherits from clsPerson)
-│   ├── clsScreen.h              # Base class for shared screen formatting
-│   ├── clsMainScreen.h          # Controls the main menu and navigation
-│   ├── clsClientsListScreen.h   # Displays all clients
-│   ├── clsAddNewClientScreen.h  # Handles adding a new client
-│   ├── clsDeleteClientScreen.h  # Handles client deletion
-│   ├── clsUpdateClientScreen.h  # Handles updating client information
-│   ├── clsFindClientScreen.h    # Handles client search functionality
-│   ├── clsTransactionsScreen.h  # Transactions menu controller
-│   ├── clsDepositScreen.h       # Deposit operation screen
-│   ├── clsWithdrawScreen.h      # Withdraw operation screen
-│   ├── clsTotalBalancesScreen.h # Displays total balances
-│   ├── clsManageUsersScreen.h   # (Basic structure for user management)
-│   ├── clsInputValidate.h       # Input validation helper functions
-│   ├── clsString.h              # String utility functions (e.g., split)
-│   ├── clsDate.h                # (Planned) Date handling utilities
-│   └── clsUtil.h                # (Planned) General helper utilities
-│
-└── Clients.txt                  # Text file used for data storage (auto-generated)
-```
+1. Clone the repository or download all source files.
+2. Open the solution in Visual Studio
+   (or create a new Console App project and add all `.h` files and `OOP Bank System.cpp`).
+3. Build the solution (`Ctrl + Shift + B`).
+4. Run the executable.
 
-### Structure Explanation
+The program will automatically create `Clients.txt` and `Users.txt` in the same directory if they don’t exist.
 
-- **Entity Classes** (`clsPerson`, `clsBankClient`)
-  Responsible for representing and managing business data.
+---
 
-- **Screen Classes**
-  Each feature has its own screen class to separate UI logic from business logic.
+## 🔐 Default Admin User
 
-- **Utility Classes**
-  Provide helper functions such as input validation and string manipulation.
+If no users exist, you can manually create an admin in `Users.txt`:
 
-- **Clients.txt**
-  Acts as a simple file-based database for storing client records.
+`Mohammed#//#Abu-Hadhoud#//#Msa@Gmail.com#//#838838#//#User5#//#5555#//#-1`
 
-This structure improves readability, maintainability, and separation of concerns.
+---
 
-```
-
-```
+> Note: The project is under active development; manual testing has been performed, but no formal u

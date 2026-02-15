@@ -36,6 +36,8 @@ private:
 	}
 public:
 	static void ShowAddNewClientScreen() {
+		if (!clsScreen::CheckAccessRight(clsBankUser::enPermissions::eAddNewClient))return;
+
 		string Title = "Add New Client Screen";
 		_DrawScreenHeader(Title);
 		string AccountNumber = "";
@@ -69,8 +71,6 @@ public:
 
 		}
 		}
-
-		_PrintClient(NewClient);
 
 	}
 };

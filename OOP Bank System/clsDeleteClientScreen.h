@@ -22,6 +22,8 @@ private:
 	}
 public:
 	static void ShowDeleteClientScreen() {
+		if (!clsScreen::CheckAccessRight(clsBankUser::enPermissions::eDeleteClient))return;
+
 		string Title = "Delete Client Screen";
 		_DrawScreenHeader(Title);
 		string AccountNumber = "";
