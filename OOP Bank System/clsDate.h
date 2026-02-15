@@ -92,7 +92,7 @@ public:
 		return IsLeapYear(Year);
 	}
 	static string DateToString(clsDate date) {
-		return to_string(date.Year) + '/' + to_string(date.Month) + '/' + to_string(date.Day);
+		return to_string(date.Day) + '/' + to_string(date.Month) + '/' + to_string(date.Year);
 	}
 	string DateToString() {
 		return DateToString(*this);
