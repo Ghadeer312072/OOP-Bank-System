@@ -1,7 +1,7 @@
-# OOP Bank System – Enhanced with User Management & Permissions
+# OOP Bank System – Enhanced with User Management, Permissions & Login Register
 
 A C++ console application for managing bank clients, demonstrating a transition from procedural to object-oriented programming.
-This version adds a complete user management system with login, role-based permissions, and secure access control.
+This version includes a complete user management system with login, role-based permissions, secure access control, and a login activity register system.
 
 ---
 
@@ -14,6 +14,7 @@ The main goal of this project was to:
 - Apply file handling for data persistence
 - Improve code organization and modularity
 - Implement a realistic user authentication and permission system
+- Track and audit user login activity
 
 ---
 
@@ -43,6 +44,29 @@ The main goal of this project was to:
 - **User Management** – Add, delete, update, list, and find system users (requires admin permission).
 - **Permission System** – Fine-grained access control using bitwise permissions.
 - **Access Control** – Each menu option is enabled only if the logged-in user has the corresponding permission.
+- **Login Register Logging** – Every successful login is recorded in a dedicated log file.
+- **Login Register Screen** – View complete login history from inside the system (requires permission).
+
+---
+
+## 📝 Login Register System
+
+Each successful login is stored in a file called:
+
+### 📄 Login record format:
+
+`Date - Time#//#UserName#//#Password#//#Permissions`
+
+### Example:
+
+`16/2/2026 - 12:19:17#//#User6#//#1234#//#-1`
+
+This allows:
+
+- Tracking system access
+- Auditing user activity
+- Monitoring administrative usage
+- Improving system security
 
 ---
 
@@ -50,6 +74,7 @@ The main goal of this project was to:
 
 - Clients stored in `Clients.txt`
 - Users stored in `Users.txt`
+- Login activity stored in `LoginRegister.txt`
 
 ### Client record format:
 
@@ -67,19 +92,18 @@ Deleted records are marked and excluded when saving back to the file.
 
 Permissions are managed as a single integer where each bit represents a specific right:
 
-| Bit | Permission         | Value |
-| --- | ------------------ | ----- |
-| 0   | Show Client List   | 1     |
-| 1   | Add New Client     | 2     |
-| 2   | Delete Client      | 4     |
-| 3   | Update Client Info | 8     |
-| 4   | Find Client        | 16    |
-| 5   | Transactions       | 32    |
-| 6   | Manage Users       | 64    |
+| Bit | Permission          | Value |
+| --- | ------------------- | ----- |
+| 0   | Show Client List    | 1     |
+| 1   | Add New Client      | 2     |
+| 2   | Delete Client       | 4     |
+| 3   | Update Client Info  | 8     |
+| 4   | Find Client         | 16    |
+| 5   | Transactions        | 32    |
+| 6   | Manage Users        | 64    |
+| 7   | Show Login Register | 128   |
 
-A permission value of `-1` grants full access to all features.
-
----
+## A permission value of `-1` grants full access to all features.
 
 ## 🧠 OOP Concepts Used
 
@@ -88,11 +112,11 @@ A permission value of `-1` grants full access to all features.
 - All data members are private.
 - Access is controlled via getters and setters.
 - Business logic (Deposit, Withdraw, Save, Delete) is handled inside the class.
-- MSVC extension `__declspec(property)` is used to simulate C#-like properties for cleaner syntax.
 
 ### Inheritance
 
 - `clsBankClient` inherits from `clsPerson`.
+- `clsBankUser` inherits from `clsPerson`.
 - All screen classes inherit from `clsScreen`, which provides common header-drawing methods.
 
 ### Polymorphism (Function Overloading)
@@ -133,6 +157,7 @@ OOP Bank System/
 │ ├── clsFindUserScreen.h
 │ ├── clsInputValidate.h
 │ ├── clsListUsersScreen.h
+│ ├── clsLoginRegisterScreen.h
 │ ├── clsLoginScreen.h
 │ ├── clsMainScreen.h
 │ ├── clsManageUsersScreen.h
