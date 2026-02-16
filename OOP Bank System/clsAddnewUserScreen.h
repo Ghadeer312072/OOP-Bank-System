@@ -77,6 +77,11 @@ private:
 		if (answer == 'y' || answer == 'Y') {
 			Permission += clsBankUser::enPermissions::eManageUsers;
 		}
+		cout << "Show Login Register? (y/n)? ";
+		cin >> answer;
+		if (answer == 'y' || answer == 'Y') {
+			Permission += clsBankUser::enPermissions::enLoginRegister;
+		}
 		return Permission;
 	}
 public:

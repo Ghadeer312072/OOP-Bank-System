@@ -71,7 +71,18 @@ public:
 		day = now->tm_mday;
 		return clsDate(year, month, day);
 	}
-
+	static string GetSystemDateTimeString() {
+		time_t t = time(0);
+		tm* now = localtime(&t);
+		short year, month, day, hour, min, sec;
+		year = now->tm_year + 1900;
+		month = now->tm_mon + 1;
+		day = now->tm_mday;
+		hour = now->tm_hour;
+		min = now->tm_min;
+		sec = now->tm_sec;
+		return (to_string(day) + "/" + to_string(month) + "/" + to_string(year) + " - " + to_string(hour) + ":" + to_string(min) + ":" + to_string(sec));
+	}
 	static bool ISValid(clsDate date) {
 		if (date.Year < 0)return false;
 		if (date.Month == 2 && date.Day > 29)return false;

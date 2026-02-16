@@ -16,7 +16,7 @@ private:
 	string _Password;
 	int _Permission;
 	bool _MarkedForDelete = false;
-
+	
 
 
 	static clsBankUser _ConviretLineToUserObject(string line) {
@@ -89,8 +89,34 @@ private:
 	void _AddNew() {
 		AddDataLineToFile(_ConvertObjectToLine(*this));
 	}
+	string _PrepareLogInRecord(string delim = "#//#") {
+		string UserLogLine = "";
+		UserLogLine += clsDate::GetSystemDateTimeString() + delim;
+		UserLogLine += _UserName + delim;
+		UserLogLine += _Password + delim;
+		UserLogLine += to_string(_Permission);
+		return UserLogLine;
+	}
+	struct stLoginRegisterRecord;
+	static stLoginRegisterRecord _ConviretRegisterUsersToObject(string line) {
+		vector<string> vUser = clsString::Split(line, "#//#");
+		stLoginRegisterRecord Record;
+		Record.date = vUser[0];
+		Record.userName = vUser[1];
+		Record.password = vUser[2];
+		Record.permission = stoi(vUser[3]);
 
+		return Record;
+	}
 public:
+	struct stLoginRegisterRecord {
+		string date;
+		string userName;
+		string password;
+		int permission;
+	};
+
+
 	 enum enPermissions {
 		eAll = -1,
 		eClientsList = 1,
@@ -100,6 +126,7 @@ public:
 		eFindClient = 16,
 		eTransaction = 32,
 		eManageUsers = 64,
+		enLoginRegister=128,
 	};
 	  bool CheckAccessPermission(enPermissions permission) {
 		if (this->Permission  == enPermissions::eAll)return true;
@@ -109,6 +136,7 @@ public:
 			return false;
 
 	}
+	  
 	clsBankUser(enMode mode, string firstName, string lastName, string email, string phone, string userName, string password, int permission) :
 		clsPerson(firstName, lastName, email, phone) {
 		_Mode = mode;
@@ -147,7 +175,7 @@ public:
 	}
 	__declspec(property(get = getPermission, put = setPermission)) int Permission;
 	///////////
-
+	
 	static clsBankUser Find(string userName) {
 		fstream myfile;
 		myfile.open("Users.txt", ios::in);
@@ -239,7 +267,30 @@ public:
 	{
 		return _LoadUsersFromFile();
 	}
-	
-	
+	static vector <stLoginRegisterRecord> GetRegisterUsersList() {
+		vector<stLoginRegisterRecord> vUsers;
+		fstream myFile;
+		myFile.open("LoginRegister.txt", ios::in);
+		if (myFile.is_open()) {
+			string line;
+			while (getline(myFile, line)) {
+				stLoginRegisterRecord user = _ConviretRegisterUsersToObject(line);
+				vUsers.push_back(user);
+			}
+			myFile.close();
+		}
+		return vUsers;
+	}
+	void RegisterLogIn() {
+		fstream myfile;
+		string userLogLine = _PrepareLogInRecord();
+		myfile.open("LoginRegister.txt", ios::out | ios::app);
+		if (myfile.is_open()) {
+			myfile << userLogLine << endl;
+
+			myfile.close();
+		}
+
+	}
 };
 
