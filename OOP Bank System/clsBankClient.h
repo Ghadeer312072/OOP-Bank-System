@@ -1,6 +1,7 @@
 #pragma once
 #include"clsPerson.h"
 #include"clsString.h"
+#include"Global.h"
 #include"clsInputValidate.h"
 #include<vector>
 #include<fstream>
@@ -88,6 +89,44 @@ private:
 	}
 	void _AddNew() {
 		AddDataLineToFile(_ConvertObjectToLine(*this));
+	}
+	string _PrepareTransferRecord(float Amount, clsBankClient DestinationClient, string UserName, string delim = "#//#") {
+		string TransferDataline = "";
+		TransferDataline += clsDate::GetSystemDateTimeString() + delim;
+		TransferDataline += _AccountNumber + delim;
+		TransferDataline += DestinationClient.AccountNumber + delim;
+		TransferDataline += to_string(Amount) + delim;
+		TransferDataline += to_string(AccountBalance) + delim;
+		TransferDataline += to_string(DestinationClient.AccountBalance) + delim;
+		TransferDataline += CurrentUser.UserName;
+
+
+
+
+		return TransferDataline;
+	}
+	void _RegisterTransferLog(float Amount, clsBankClient DestinationClient,string UserName) {
+		fstream myfile;
+		string stDataLine = _PrepareTransferRecord(Amount, DestinationClient, UserName);
+		myfile.open("TransferLog.txt", ios::out | ios::app);
+		if (myfile.is_open()) {
+			myfile <<stDataLine << endl;
+			myfile.close();
+		}
+	}
+	struct stTransferLogRecord;
+	static stTransferLogRecord _ConviretTransferLogLineToRecord(string line) {
+		vector<string> vOPerations = clsString::Split(line,"#//#");
+		stTransferLogRecord TrancgerOperation;
+		TrancgerOperation.Date_Time = vOPerations[0];
+		TrancgerOperation.SourceAcc = vOPerations[1];
+		TrancgerOperation.distinationAcc = vOPerations[2];
+		TrancgerOperation.Amount = stod(vOPerations[3]);
+		TrancgerOperation.SourceBalance = stod(vOPerations[4]);
+		TrancgerOperation.DistinationBalance = stod(vOPerations[5]);
+		TrancgerOperation.UserName = vOPerations[6];
+
+		return TrancgerOperation;
 	}
 public:
 	
@@ -227,5 +266,38 @@ public:
 		}
 		
 	}
+	bool Transfer(float Amount, clsBankClient& DestinationClient, string UserName) {
+		if (Amount > _AccountBalance)return false;
+		Withdraw(Amount);
+		DestinationClient.Deposit(Amount);
+		_RegisterTransferLog(Amount, DestinationClient, UserName);
+		return true;
+	}
+	struct stTransferLogRecord {
+		string Date_Time;
+		string SourceAcc;
+		string distinationAcc;
+		float Amount;
+		float SourceBalance;
+		float DistinationBalance;
+		string UserName;
+	};
+	static vector<stTransferLogRecord> GetTransferLogList() {
+		vector<stTransferLogRecord> vTransferOperations;
+		fstream myFile;
+		myFile.open("TransferLog.txt", ios::in);
+		if (myFile.is_open()) {
+			string line;
+			stTransferLogRecord TrancgerOperation;
+			while (getline(myFile, line)) {
+				 TrancgerOperation = _ConviretTransferLogLineToRecord(line);
+				 vTransferOperations.push_back(TrancgerOperation);
+			}
+			myFile.close();
+		}
+		return vTransferOperations;
+	}
+
+	
 };
 

@@ -1,7 +1,8 @@
 #pragma once
+#include"InterfaceCommunication.h"
 #include<iostream>
 using namespace std;
-class clsPerson
+class clsPerson:public InterfaceCommunication
 {
 private:
 	string _FirstName;
@@ -52,7 +53,10 @@ public:
 		return FirstName + " " + LastName;
 	}
 	__declspec(property(get = getFullName)) string FullName;
-	///////////////
+	///////////////abstract class methods implementation
+	void SendEmail(string Title, string Body) {};
+	void SendFax(string Title, string Body) {};
+	void SendSMS(string Title, string Body) {};
 	/*void Print() {
 		cout << "\n Info";
 		cout << "\n_____________________";

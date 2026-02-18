@@ -52,4 +52,18 @@ public:
             		return NumberToText(number / 1000000000000) + " trillions " + NumberToText(number % 1000000000000);
             	}
             }
+    static string EncryptText(string passWord,int key=2) {
+        string EncryptedPassword = "";
+        for (short i = 0; i < passWord.length(); i++) {
+            EncryptedPassword += char((int)passWord[i] +key);
+        }
+        return EncryptedPassword;
+    }
+    static string DecryotText(string passWord, int key = 2) {
+        string DecryotPassword = "";
+        for (short i = 0; i < passWord.length(); i++) {
+            DecryotPassword += char((int)passWord[i] - key);
+        }
+        return DecryotPassword;
+    }
 };

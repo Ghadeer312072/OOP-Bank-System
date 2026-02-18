@@ -1,20 +1,31 @@
-# OOP Bank System – Enhanced with User Management, Permissions & Login Register
+# OOP Bank System – Enhanced with User Management, Permissions, Login, Transfers & Encryption
 
-A C++ console application for managing bank clients, demonstrating a transition from procedural to object-oriented programming.
-This version includes a complete user management system with login, role-based permissions, secure access control, and a login activity register system.
+A C++ console application for managing bank clients, demonstrating a full transition from **procedural programming** to a structured **object-oriented design**.
+
+This version includes:
+
+- Complete **user management system**
+- Secure **login & authentication**
+- **Role-based permissions** (bitwise)
+- Login activity register
+- Inter-account transfers with logging
+- Password encryption
+- Full audit trail for financial operations
 
 ---
 
 ## 📌 Project Goal
 
-The main goal of this project was to:
+The main goals of this project:
 
 - Practice converting procedural code into object-oriented design
-- Understand class relationships and responsibility separation
+- Understand class relationships and separation of responsibilities
 - Apply file handling for data persistence
 - Improve code organization and modularity
-- Implement a realistic user authentication and permission system
+- Implement a realistic user authentication & permission system
 - Track and audit user login activity
+- Add secure money transfers with a full audit trail
+- Protect sensitive user data using password encryption
 
 ---
 
@@ -22,36 +33,65 @@ The main goal of this project was to:
 
 ### 👤 Client Management
 
-- **List Clients** – Display all clients in a formatted table.
-- **Add New Client** – Prevent duplicate account numbers with validation.
-- **Delete Client** – Mark a client as deleted (soft delete) and update the file.
-- **Update Client Info** – Modify first name, last name, email, phone, PIN, and balance.
-- **Find Client** – Search by account number (with optional PIN) and view full details.
+- **List Clients** – Display all clients in a formatted table
+- **Add New Client** – Prevent duplicate account numbers with validation
+- **Delete Client** – Soft delete (mark as deleted and update file)
+- **Update Client Info** – Modify:
+  - First Name
+  - Last Name
+  - Email
+  - Phone
+  - PIN
+  - Balance
+- **Find Client** – Search by account number (optional PIN verification)
 
 ---
 
 ### 💰 Transactions
 
-- **Deposit** – Add funds to a client’s account.
-- **Withdraw** – Deduct funds with balance validation.
-- **Total Balance** – Display individual balances and the total sum of all accounts.
+- **Deposit** – Add funds to client account
+- **Withdraw** – Deduct funds with balance validation
+- **Total Balance** – Display individual balances and total sum
+- **Transfer** – Transfer money between accounts:
+  1. Enter sender account number → display sender card
+  2. Enter recipient account number → display recipient card
+  3. Enter amount (≤ sender balance)
+  4. Confirm operation
+  5. Execute transfer
+  6. Log operation in dedicated file
+
+- **Transfer Log** – View formatted table of all transfers including:
+  - Date/Time
+  - Sender & Recipient accounts
+  - Amount
+  - Balances after transfer
+  - User who performed the operation
 
 ---
 
-### 🔐 User Management & Authentication
+## 🔐 User Management & Authentication
 
-- **Login System** – Secure authentication with username and password verification.
-- **User Management** – Add, delete, update, list, and find system users (requires admin permission).
-- **Permission System** – Fine-grained access control using bitwise permissions.
-- **Access Control** – Each menu option is enabled only if the logged-in user has the corresponding permission.
-- **Login Register Logging** – Every successful login is recorded in a dedicated log file.
-- **Login Register Screen** – View complete login history from inside the system (requires permission).
+- **Login System** – Username & password verification
+- **User Management** – Add, update, delete, list, and find users (Admin only)
+- **Permission System** – Fine-grained access control using bitwise flags
+- **Access Control** – Menu options enabled based on user permissions
+- **Login Register Logging** – Every successful login is logged
+- **Login Register Screen** – View full login history (requires permission)
+
+---
+
+## 🔒 Password Encryption
+
+- Passwords are stored **encrypted** in `Users.txt`
+- Simple reversible encryption algorithm
+- Automatically decrypted when loaded
+- Prevents plain-text password exposure in files
 
 ---
 
 ## 📝 Login Register System
 
-Each successful login is stored in a file called:
+Each successful login is stored in:
 
 ### 📄 Login record format:
 
@@ -68,15 +108,31 @@ This allows:
 - Monitoring administrative usage
 - Improving system security
 
+## 📋 Transfer Log System
+
+TransferLog.txt
+
+### 📄 Transfer Record Format
+
+`Date - Time#//#SenderAccount#//#RecipientAccount#//#Amount#//#SenderBalanceAfter#//#RecipientBalanceAfter#//#UserName`
+
+### Example:
+
+`17/2/2026 - 16:33:17#//#A114#//#A113#//#500.000000#//#3517.000000#//#3800.000000#//#User5`
+Provides a complete audit trail for all monetary movements.
+
 ---
 
 ## 📂 Data Storage
 
-- Clients stored in `Clients.txt`
-- Users stored in `Users.txt`
-- Login activity stored in `LoginRegister.txt`
+| File                | Purpose                               |
+| ------------------- | ------------------------------------- |
+| `Clients.txt`       | Store client data                     |
+| `Users.txt`         | Store user data (encrypted passwords) |
+| `LoginRegister.txt` | Login history                         |
+| `TransferLog.txt`   | Transfer history                      |
 
-### Client record format:
+### 🧾 Client Record Format
 
 `FirstName#//#LastName#//#Email#//#Phone#//#AccountNumber#//#PinCode#//#Balance`
 
@@ -84,7 +140,8 @@ This allows:
 
 `FirstName#//#LastName#//#Email#//#Phone#//#UserName#//#Password#//#Permissions`
 
-Deleted records are marked and excluded when saving back to the file.
+> Password is encrypted before saving.
+> Deleted records are marked and excluded when saving back to the file.
 
 ---
 
@@ -111,7 +168,7 @@ Permissions are managed as a single integer where each bit represents a specific
 
 - All data members are private.
 - Access is controlled via getters and setters.
-- Business logic (Deposit, Withdraw, Save, Delete) is handled inside the class.
+- Business logic (Deposit, Withdraw, Save, Delete,Transfer) is handled inside the class.
 
 ### Inheritance
 
@@ -128,16 +185,22 @@ The `Find` method is overloaded:
 
 ### Abstraction
 
-High-level operations like `Save()`, `Delete()`, `Deposit()`, and `Withdraw()` hide internal file handling and data conversion logic.
+High-level operations hide:
 
-Screens interact with business classes only through public static methods
-(e.g., `clsBankClient::Find`, `clsBankClient::GetClientsList`).
+- File handling
+- Data parsing
+- Encryption logic
+  Screens interact only through public static methods like:
 
+```cpp
+clsBankClient::Find();
+clsBankClient::GetClientsList();`
 ---
 
 # 📁 Project Structure (Based on Current Solution)
 
 ```
+
 OOP Bank System/
 │
 ├── References
@@ -166,6 +229,8 @@ OOP Bank System/
 │ ├── clsString.h
 │ ├── clsTotalBalancesScreen.h
 │ ├── clsTransactionsScreen.h
+│ ├── clsTransferScreen.h
+│ ├── clsTransferLogScreen.h
 │ ├── clsUpdateClientScreen.h
 │ ├── clsUpdateUserScreen.h
 │ ├── clsUtil.h
@@ -186,7 +251,7 @@ OOP Bank System/
 ### Requirements
 
 - Windows OS (due to `__declspec(property)` and `system("pause>0")`)
-- Visual Studio 2019 or later (MSVC compiler)
+- Visual Studio 2019
 
 ### Steps
 
@@ -196,7 +261,17 @@ OOP Bank System/
 3. Build the solution (`Ctrl + Shift + B`).
 4. Run the executable.
 
-The program will automatically create `Clients.txt` and `Users.txt` in the same directory if they don’t exist.
+The program automatically creates:
+
+Clients.txt
+
+Users.txt
+
+LoginRegister.txt
+
+TransferLog.txt
+
+(if they don’t already exist)
 
 ---
 
@@ -204,8 +279,8 @@ The program will automatically create `Clients.txt` and `Users.txt` in the same 
 
 If no users exist, you can manually create an admin in `Users.txt`:
 
-`Mohammed#//#Abu-Hadhoud#//#Msa@Gmail.com#//#838838#//#User5#//#5555#//#-1`
+`Mohammed#//#Abu-Hadhoud#//#Msa@Gmail.com#//#838838#//#User6//#1234#//#-1`
 
 ---
 
-> Note: The project is under active development; manual testing has been performed, but no formal u
+```

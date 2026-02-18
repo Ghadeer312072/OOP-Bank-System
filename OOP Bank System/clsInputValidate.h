@@ -37,7 +37,6 @@ public:
 	}
 	static double ReadDuobleNumber(string message = "Invalid Number, Enter again\n") {
 		double num = 0;
-		cout << "Please Enter int number: ";
 		cin >> num;
 		while (cin.fail()) {
 			cin.clear();

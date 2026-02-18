@@ -1,6 +1,7 @@
 #pragma once
 #include"clsPerson.h"
 #include"clsString.h"
+#include"clsUtil.h"
 #include"clsInputValidate.h"
 #include<vector>
 #include<fstream>
@@ -21,7 +22,7 @@ private:
 
 	static clsBankUser _ConviretLineToUserObject(string line) {
 		vector<string> vUser = clsString::Split(line, "#//#");
-		return clsBankUser(enMode::UpdateMode, vUser[0], vUser[1], vUser[2], vUser[3], vUser[4], vUser[5], stoi(vUser[6]));
+		return clsBankUser(enMode::UpdateMode, vUser[0], vUser[1], vUser[2], vUser[3], vUser[4],clsUtil::DecryotText(vUser[5]), stoi(vUser[6]));
 	}
 	static clsBankUser _GetEmptyObject() {
 		return clsBankUser(enMode::EmptyMode, " ", " ", " ", " ", " ", " ", 0);
@@ -33,7 +34,7 @@ private:
 		UserLine += client.Email + delim;
 		UserLine += client.Phone + delim;
 		UserLine += client.UserName + delim;
-		UserLine += client.Password + delim;
+		UserLine += clsUtil::EncryptText(client.Password) + delim;
 		UserLine += to_string(client.Permission);
 		return UserLine;
 	}
@@ -59,7 +60,6 @@ private:
 		if (myFile.is_open()) {
 			for (clsBankUser& C : vUsers) {
 				if (C._MarkedForDelete == false) {
-					Dataline = _ConvertObjectToLine(C);
 					myFile << Dataline << "\n";
 				}
 			}
@@ -93,7 +93,7 @@ private:
 		string UserLogLine = "";
 		UserLogLine += clsDate::GetSystemDateTimeString() + delim;
 		UserLogLine += _UserName + delim;
-		UserLogLine += _Password + delim;
+		UserLogLine += clsUtil::EncryptText(_Password)+ delim;
 		UserLogLine += to_string(_Permission);
 		return UserLogLine;
 	}
@@ -103,7 +103,7 @@ private:
 		stLoginRegisterRecord Record;
 		Record.date = vUser[0];
 		Record.userName = vUser[1];
-		Record.password = vUser[2];
+		Record.password = clsUtil::DecryotText(vUser[2]);
 		Record.permission = stoi(vUser[3]);
 
 		return Record;
