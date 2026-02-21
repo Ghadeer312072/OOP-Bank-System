@@ -80,6 +80,11 @@ private:
 		if (answer == 'y' || answer == 'Y') {
 			Permission += clsBankUser::enPermissions::enLoginRegister;
 		}
+		cout << "Show Currency Exchange? (y/n)? ";
+		cin >> answer;
+		if (answer == 'y' || answer == 'Y') {
+			Permission += clsBankUser::enPermissions::enCurrencyExchange;
+		}
 		return Permission;
 	}
 public:

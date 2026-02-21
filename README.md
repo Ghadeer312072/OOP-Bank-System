@@ -1,153 +1,168 @@
-# OOP Bank System – Enhanced with User Management, Permissions, Login, Transfers & Encryption
+# OOP Bank System – Enhanced with User Management, Permissions, Login, Transfers & Encryption, with Currency Exchange
 
-A C++ console application for managing bank clients, demonstrating a full transition from **procedural programming** to a structured **object-oriented design**.
+## 📌 Overview
 
-This version includes:
+**OOP Bank System** is a fully featured C++ console-based banking application built using Object-Oriented Programming principles.
 
-- Complete **user management system**
-- Secure **login & authentication**
-- **Role-based permissions** (bitwise)
-- Login activity register
-- Inter-account transfers with logging
-- Password encryption
-- Full audit trail for financial operations
+The system evolved from procedural programming into a structured OOP architecture and now includes:
 
----
-
-## 📌 Project Goal
-
-The main goals of this project:
-
-- Practice converting procedural code into object-oriented design
-- Understand class relationships and separation of responsibilities
-- Apply file handling for data persistence
-- Improve code organization and modularity
-- Implement a realistic user authentication & permission system
-- Track and audit user login activity
-- Add secure money transfers with a full audit trail
-- Protect sensitive user data using password encryption
+- 👤 Client Management
+- 🔐 Secure Login & Authentication
+- 🛡 Role-Based Access Control (Bitwise Permissions)
+- 💰 Deposit & Withdraw Operations
+- 🔁 Secure Inter-Account Transfers with Audit Trail
+- 📝 Login Activity Register
+- 🔒 Password Encryption
+- 💱 Integrated Currency Exchange Module
+- 📂 Persistent File-Based Storage
 
 ---
 
-## 🚀 Features
+# 🎯 Project Objectives
 
-### 👤 Client Management
-
-- **List Clients** – Display all clients in a formatted table
-- **Add New Client** – Prevent duplicate account numbers with validation
-- **Delete Client** – Soft delete (mark as deleted and update file)
-- **Update Client Info** – Modify:
-  - First Name
-  - Last Name
-  - Email
-  - Phone
-  - PIN
-  - Balance
-- **Find Client** – Search by account number (optional PIN verification)
+- Apply Object-Oriented Design Principles
+- Implement Encapsulation, Inheritance & Abstraction
+- Design a secure authentication system
+- Implement fine-grained permission control
+- Track and audit financial operations
+- Build a modular, scalable console architecture
+- Integrate real-world currency exchange functionality
 
 ---
 
-### 💰 Transactions
+# 🏗 System Architecture
 
-- **Deposit** – Add funds to client account
-- **Withdraw** – Deduct funds with balance validation
-- **Total Balance** – Display individual balances and total sum
-- **Transfer** – Transfer money between accounts:
-  1. Enter sender account number → display sender card
-  2. Enter recipient account number → display recipient card
-  3. Enter amount (≤ sender balance)
-  4. Confirm operation
-  5. Execute transfer
-  6. Log operation in dedicated file
+The project follows a layered structure:
 
-- **Transfer Log** – View formatted table of all transfers including:
-  - Date/Time
-  - Sender & Recipient accounts
-  - Amount
-  - Balances after transfer
-  - User who performed the operation
+- **Core Classes** → Business Logic (Clients, Users, Currency)
+- **Screen Layer** → UI Navigation & Interaction
+- **Utility Layer** → Validation, Date, String, Encryption
+- **File Layer** → Data Persistence
 
 ---
 
-## 🔐 User Management & Authentication
+# 👤 Client Management
 
-- **Login System** – Username & password verification
-- **User Management** – Add, update, delete, list, and find users (Admin only)
-- **Permission System** – Fine-grained access control using bitwise flags
-- **Access Control** – Menu options enabled based on user permissions
-- **Login Register Logging** – Every successful login is logged
-- **Login Register Screen** – View full login history (requires permission)
+✔ List Clients
+✔ Add New Client (duplicate prevention)
+✔ Delete Client (Soft Delete)
+✔ Update Client Information
+✔ Find Client (with optional PIN verification)
 
----
-
-## 🔒 Password Encryption
-
-- Passwords are stored **encrypted** in `Users.txt`
-- Simple reversible encryption algorithm
-- Automatically decrypted when loaded
-- Prevents plain-text password exposure in files
-
----
-
-## 📝 Login Register System
-
-Each successful login is stored in:
-
-### 📄 Login record format:
-
-`Date - Time#//#UserName#//#Password#//#Permissions`
-
-### Example:
-
-`16/2/2026 - 12:19:17#//#User6#//#1234#//#-1`
-
-This allows:
-
-- Tracking system access
-- Auditing user activity
-- Monitoring administrative usage
-- Improving system security
-
-## 📋 Transfer Log System
-
-TransferLog.txt
-
-### 📄 Transfer Record Format
-
-`Date - Time#//#SenderAccount#//#RecipientAccount#//#Amount#//#SenderBalanceAfter#//#RecipientBalanceAfter#//#UserName`
-
-### Example:
-
-`17/2/2026 - 16:33:17#//#A114#//#A113#//#500.000000#//#3517.000000#//#3800.000000#//#User5`
-Provides a complete audit trail for all monetary movements.
-
----
-
-## 📂 Data Storage
-
-| File                | Purpose                               |
-| ------------------- | ------------------------------------- |
-| `Clients.txt`       | Store client data                     |
-| `Users.txt`         | Store user data (encrypted passwords) |
-| `LoginRegister.txt` | Login history                         |
-| `TransferLog.txt`   | Transfer history                      |
-
-### 🧾 Client Record Format
+### 📄 Client Record Format
 
 `FirstName#//#LastName#//#Email#//#Phone#//#AccountNumber#//#PinCode#//#Balance`
 
-### User record format:
+---
 
-`FirstName#//#LastName#//#Email#//#Phone#//#UserName#//#Password#//#Permissions`
-
-> Password is encrypted before saving.
-> Deleted records are marked and excluded when saving back to the file.
+📁 Stored in: `Clients.txt`
 
 ---
 
-## 🔑 Permission System (Bitwise)
+# 💰 Transactions Module
 
-Permissions are managed as a single integer where each bit represents a specific right:
+✔ Deposit
+✔ Withdraw (Balance validation)
+✔ Total Balances Summary
+✔ Inter-Account Transfers
+✔ Transfer Logging
+
+### 📋 Transfer Log Format
+
+`Date - Time#//#SenderAccount#//#RecipientAccount#//#Amount#//#SenderBalanceAfter#//#RecipientBalanceAfter#//#UserName`
+
+📁 Stored in: `TransferLog.txt`
+
+Provides a complete audit trail for all monetary operations.
+
+---
+
+# 🔐 User Management & Authentication
+
+✔ Secure Login System
+✔ Add / Update / Delete / Find Users
+✔ Bitwise Permission Control
+✔ Login History Tracking
+✔ Encrypted Password Storage
+
+### 📄 User Record Format
+
+`FirstName#//#LastName#//#Email#//#Phone#//#UserName#//#Password#//#Permissions`
+
+📁 Stored in: `Users.txt`
+🔒 Passwords are encrypted before saving.
+
+---
+
+# 📝 Login Register System
+
+Every successful login is recorded in:
+
+📁 `LoginRegister.txt`
+
+### Format
+
+`Date - Time#//#UserName#//#Password#//#Permissions`
+
+✔ Tracks system access
+✔ Monitors administrative activity
+✔ Improves auditing & security
+
+---
+
+# 💱 Currency Exchange Module (NEW)
+
+Integrated directly into the Main Menu.
+
+## 🌍 Features
+
+### 📋 List Currencies
+
+Displays:
+
+- Country
+- ISO Code
+- Currency Name
+- Exchange Rate (Relative to 1 USD)
+
+---
+
+### 🔎 Find Currency
+
+Search by:
+
+- Currency Code (USD, EUR, GBP)
+- Country Name (Case-insensitive)
+
+---
+
+### ✏️ Update Exchange Rate
+
+- Enter Currency Code
+- View Current Data
+- Confirm Update
+- Enter New Rate
+- Automatically Saved
+
+---
+
+### 🧮 Currency Calculator
+
+Conversion Logic:
+Source Currency → USD → Target Currency
+
+Example:
+
+- 1 USD = 1.18 EUR
+- 1 EUR = 1 / 1.18 USD
+
+📁 Currency Data Stored in: `Currencies.txt`
+
+### 📄 Currency File Format
+
+## `Country#//#Code#//#Name#//#Rate`
+
+# 🔑 Permission System (Bitwise)
 
 | Bit | Permission          | Value |
 | --- | ------------------- | ----- |
@@ -159,128 +174,105 @@ Permissions are managed as a single integer where each bit represents a specific
 | 5   | Transactions        | 32    |
 | 6   | Manage Users        | 64    |
 | 7   | Show Login Register | 128   |
+| 8   | Currency Exchange   | 256   |
 
-## A permission value of `-1` grants full access to all features.
+## Permission = -1 → Full System Access
 
-## 🧠 OOP Concepts Used
+# 🧠 OOP Concepts Applied
 
-### Encapsulation
+## 🔒 Encapsulation
 
-- All data members are private.
-- Access is controlled via getters and setters.
-- Business logic (Deposit, Withdraw, Save, Delete,Transfer) is handled inside the class.
+- Private members
+- Controlled access via getters/setters
+- Business logic inside domain classes
 
-### Inheritance
+## 🧬 Inheritance
 
-- `clsBankClient` inherits from `clsPerson`.
-- `clsBankUser` inherits from `clsPerson`.
-- All screen classes inherit from `clsScreen`, which provides common header-drawing methods.
+- `clsBankClient` → `clsPerson`
+- `clsBankUser` → `clsPerson`
+- All screens inherit from `clsScreen`
 
-### Polymorphism (Function Overloading)
+## 🔁 Polymorphism
 
-The `Find` method is overloaded:
+- Overloaded `Find()` methods
 
-- Find by account number
-- Find by account number + PIN
+## 🎯 Abstraction
 
-### Abstraction
-
-High-level operations hide:
-
-- File handling
-- Data parsing
-- Encryption logic
-  Screens interact only through public static methods like:
+High-level screens interact with public static methods only:
 
 ```cpp
 clsBankClient::Find();
-clsBankClient::GetClientsList();`
----
-
-# 📁 Project Structure (Based on Current Solution)
-
+clsBankClient::Transfer();
+clsCurrency::FindByCode();
 ```
 
-OOP Bank System/
-│
+# 📁 Files Structure
+
+| File              | Purpose                     |
+| ----------------- | --------------------------- |
+| Clients.txt       | Client records              |
+| Users.txt         | Users (Encrypted passwords) |
+| LoginRegister.txt | Login activity              |
+| TransferLog.txt   | Transfer history            |
+| Currencies.txt    | Exchange rates              |
+
+# 🖥 Main Menu
+
+```
+[1] Show Clients List
+[2] Add New Client
+[3] Delete Client
+[4] Update Client Info
+[5] Find Client
+[6] Transactions
+[7] Manage Users
+[8] Login Register
+[9] Currency Exchange
+[10] Logout
+```
+
+# ⚙ Requirements
+
+- Windows OS
+- Visual Studio 2019
+- C++17
+
+# 🔐 Default Admin (Manual Creation if Needed)
+
+Mohammed#//#Abu-Hadhoud#//#Msa@Gmail.com#//#838838#//#User6#//#1234#//#-1
+
+# 🚀 Final Result
+
+A complete banking management system featuring:
+
+- Secure authentication
+- Role-based permissions
+- Financial auditing
+- Transfer tracking
+- Currency management
+- Currency conversion
+- Encrypted user data
+- Structured OOP architecture
+- Modular scalable design
+
+# OOP Bank System
+
+```
+OOP Bank System
 ├── References
 ├── External Dependencies
-│
-├── Header Files/
-│ ├── clsAddNewClientScreen.h
-│ ├── clsAddnewUserScreen.h
-│ ├── clsBankClient.h
-│ ├── clsBankUser.h
-│ ├── clsClientsListScreen.h
-│ ├── clsDate.h
-│ ├── clsDeleteClientScreen.h
-│ ├── clsDeleteUserScreen.h
-│ ├── clsDepositScreen.h
-│ ├── clsFindClientScreen.h
-│ ├── clsFindUserScreen.h
-│ ├── clsInputValidate.h
-│ ├── clsListUsersScreen.h
-│ ├── clsLoginRegisterScreen.h
-│ ├── clsLoginScreen.h
-│ ├── clsMainScreen.h
-│ ├── clsManageUsersScreen.h
-│ ├── clsPerson.h
-│ ├── clsScreen.h
-│ ├── clsString.h
-│ ├── clsTotalBalancesScreen.h
-│ ├── clsTransactionsScreen.h
-│ ├── clsTransferScreen.h
-│ ├── clsTransferLogScreen.h
-│ ├── clsUpdateClientScreen.h
-│ ├── clsUpdateUserScreen.h
-│ ├── clsUtil.h
-│ ├── clsWithdrawScreen.h
-│ └── Global.h
-│
-├── Resource Files/
-│
-└── Source Files/
-└── OOP Bank System.cpp
-
-```
-
----
-
-## ▶️ How to Run
-
-### Requirements
-
-- Windows OS (due to `__declspec(property)` and `system("pause>0")`)
-- Visual Studio 2019
-
-### Steps
-
-1. Clone the repository or download all source files.
-2. Open the solution in Visual Studio
-   (or create a new Console App project and add all `.h` files and `OOP Bank System.cpp`).
-3. Build the solution (`Ctrl + Shift + B`).
-4. Run the executable.
-
-The program automatically creates:
-
-Clients.txt
-
-Users.txt
-
-LoginRegister.txt
-
-TransferLog.txt
-
-(if they don’t already exist)
-
----
-
-## 🔐 Default Admin User
-
-If no users exist, you can manually create an admin in `Users.txt`:
-
-`Mohammed#//#Abu-Hadhoud#//#Msa@Gmail.com#//#838838#//#User6//#1234#//#-1`
-
----
-
+├── Header Files
+│   ├── core
+│   ├── lib
+│   ├── screens
+│   │   ├── client screens
+│   │   ├── currency screens
+│   │   ├── transaction screen
+│   │   └── user screen
+│   ├── clsMainScreen.h
+│   ├── clsScreen.h
+│   └── Global.h
+├── Resource Files
+└── Source Files
+    └── OOP Bank System.cpp
 ```

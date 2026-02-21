@@ -127,6 +127,7 @@ public:
 		eTransaction = 32,
 		eManageUsers = 64,
 		enLoginRegister=128,
+		enCurrencyExchange=256
 	};
 	  bool CheckAccessPermission(enPermissions permission) {
 		if (this->Permission  == enPermissions::eAll)return true;

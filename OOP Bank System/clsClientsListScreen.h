@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<vector>
 #include"clsScreen.h"
 #include"clsBankClient.h"
 using namespace std;

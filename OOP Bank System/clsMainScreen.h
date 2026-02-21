@@ -9,8 +9,7 @@
 #include"clsTransactionsScreen.h"
 #include"clsManageUsersSecreen.h"
 #include"clsLoginRegisterSecreen.h"
-
-
+#include"clsCurrencyMainScreen.h"
 #include"Global.h"
 
 
@@ -29,7 +28,8 @@ private:
 		eTransactions=6,
 		eManageUsers=7,
 		eLoginRegister=8,
-		eLogout=9
+		eCurrencyExchange = 9,
+		eLogout=10
 	};
 	static void _GoToMainMenue() {
 		cout << setw(37) << left << "" << "\n\tPress any key to go back to Main Menue...\n";
@@ -65,6 +65,10 @@ private:
 	static void _ShowLoginRegisterScreen() {
 		//cout << "Login Register Screen Will be here...\n";
 		clsLoginRegisterSecreen::ShowLoginRegisterMenue();
+	}
+	static void _ShowCurrencyExchangeScreen() {
+		//cout << "Currency Echange Screen Will be here...\n";
+		clsCurrencyMainScreen::ShowCurrencyMainMenue();
 	}
 	static void _Logout() {
 	 CurrentUser = clsBankUser::Find("", "");
@@ -120,6 +124,12 @@ private:
 			_GoToMainMenue();
 			break;
 		}
+		case enMainMenueOptions::eCurrencyExchange: {
+			system("cls");
+			_ShowCurrencyExchangeScreen();
+			_GoToMainMenue();
+			break;
+		}
 		case enMainMenueOptions::eLogout: {
 			system("cls");
 			_Logout();
@@ -128,8 +138,8 @@ private:
 		}
 	}
 	static short _ReadMainMenueOption() {
-		cout << "Choose what do you want to do? [1 to 9]? ";
-		short option= clsInputValidate::ReadIntNumberBetween(1, 9,"Please Enter Number Between 1 to 8");
+		cout << "Choose what do you want to do? [1 to 10]? ";
+		short option= clsInputValidate::ReadIntNumberBetween(1, 10,"Please Enter Number Between 1 to 10");
 		return option;
 	}
 public:
@@ -148,7 +158,8 @@ public:
 		cout << "  [6] Transactions.\n";
 		cout << "  [7] Manage Users.\n";
 		cout << "  [8] Login Register.\n";
-		cout << "  [9] Logout.\n";
+		cout << "  [9] Currency Exchange.\n";
+		cout << "  [10] Logout.\n";
 		cout << "============================================\n";
 		_PerformMainMenueOptions((enMainMenueOptions)_ReadMainMenueOption());
 	}
