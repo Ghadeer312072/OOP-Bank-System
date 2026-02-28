@@ -86,8 +86,7 @@ private:
             break;
         }
         case enCurrencyScreenOption::MainMenue: {
-            system("cls");
-            _ShowMainMenueScreen();
+           ;
             break;
         }
         }
@@ -98,8 +97,8 @@ public:
         system("cls");
         _DrawScreenHeader("Currency Exchange Main Screen");
         cout << "==================================================================\n";
-        cout << setw(35) << "Currency Exchange Menue\n";
-        cout << "==================================================================\n";
+        cout << setw(35) << "Currency Exchange Menue";
+        cout << "\n==================================================================\n";
         cout << "  [1] List Currencies.\n";
         cout << "  [2] Find Currency.\n";
         cout << "  [3] Update Currency.\n";

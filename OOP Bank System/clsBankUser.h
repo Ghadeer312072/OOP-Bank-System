@@ -22,6 +22,7 @@ private:
 
 	static clsBankUser _ConviretLineToUserObject(string line) {
 		vector<string> vUser = clsString::Split(line, "#//#");
+		//if (vUser.size() < 7) return _GetEmptyObject();
 		return clsBankUser(enMode::UpdateMode, vUser[0], vUser[1], vUser[2], vUser[3], vUser[4],clsUtil::DecryotText(vUser[5]), stoi(vUser[6]));
 	}
 	static clsBankUser _GetEmptyObject() {
@@ -55,12 +56,13 @@ private:
 	void _SaveUsersToFile(vector<clsBankUser> vUsers) {
 		fstream myFile;
 		myFile.open("Users.txt", ios::out);
-		string Dataline;
+		string Dataline="";
 
 		if (myFile.is_open()) {
 			for (clsBankUser& C : vUsers) {
 				if (C._MarkedForDelete == false) {
-					myFile << Dataline << "\n";
+					Dataline = _ConvertObjectToLine(C);
+					myFile << Dataline << endl;
 				}
 			}
 			myFile.close();
